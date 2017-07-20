@@ -7,7 +7,7 @@ myFmt = mdates.DateFormatter('%b \'%y')
 plt.style.use('default')
 
 filename = 'spot_prices.csv'
-WINDOW = 30         # days
+WINDOW = 60         # days
 TREND_FREQ = 1      # days
 YEAR = 365          # days
 
@@ -55,7 +55,6 @@ for year in years:
 
 # calculate statistics
 df['ROLLING_MEAN'] = df['PRICE'].rolling(WINDOW*48, center=True, win_type='blackman').mean()
-#df['ROLLING_STD'] = df['PRICE'].rolling(WINDOW*48, center=True).std()
 mean = df['PRICE'].mean()
 std = df['PRICE'].std()
 
@@ -67,14 +66,14 @@ ax.plot(df['ROLLING_MEAN'])
 ax.set_ylim([max(mean-2*std, 0), mean+2.45*std])
 ax.xaxis.set_major_formatter(myFmt)
 ax.set_title('Smoothed Data (%d-day window)' % WINDOW)
-ax.legend(['Spot price', '%d-day trend' % TREND_FREQ, 'Rolling mean'])
+ax.legend(['Spot price', 'Rolling mean'])
 plt.show()
 
 
 fig, ax = plt.subplots()
 for res in resarr:
     ax.plot(res.seasonal.reset_index(drop=True)[:TREND_FREQ*48], alpha=0.5)
-ax.set_title('Daily seaonal trend per year')
+ax.set_title('Daily seasonal trend per year')
 ax.legend(years)
 
 
