@@ -54,7 +54,7 @@ for year in years:
 
 
 # calculate statistics
-df['ROLLING_MEAN'] = df['PRICE'].rolling(WINDOW*48, center=True, win_type='blackman').mean()
+df['ROLLING_MEAN'] = df['PRICE'].rolling(WINDOW*48, center=True, win_type='boxcar').mean()
 mean = df['PRICE'].mean()
 std = df['PRICE'].std()
 
@@ -65,8 +65,9 @@ ax.plot(df['PRICE'], '.', alpha=0.1)
 ax.plot(df['ROLLING_MEAN'])
 ax.set_ylim([max(mean-2*std, 0), mean+2.45*std])
 ax.xaxis.set_major_formatter(myFmt)
-ax.set_title('Smoothed Data (%d-day window)' % WINDOW)
-ax.legend(['Spot price', 'Rolling mean'])
+ax.set_title('Historical Otahuhu Spot Price')
+ax.legend(['Spot price', '%d-day Rolling mean'%WINDOW])
+fig.savefig('overall.png')
 plt.show()
 
 
@@ -75,7 +76,7 @@ for res in resarr:
     ax.plot(res.seasonal.reset_index(drop=True)[:TREND_FREQ*48], alpha=0.5)
 ax.set_title('Daily seasonal trend per year')
 ax.legend(years)
-
+fig.savefig('daily.png')
 
 
 print("Average price for January 2007: $%.2f" % average_price(df,'1/1/2007', '31/1/2007'))
