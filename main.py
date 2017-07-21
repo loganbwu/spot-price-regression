@@ -52,6 +52,11 @@ for year in years:
     resarr.append(sm.tsa.seasonal_decompose(df[df['YEAR']==year]['PRICE'],
                                             freq=48*TREND_FREQ))
 
+res = sm.tsa.seasonal_decompose(df['PRICE'], freq=48*TREND_FREQ)
+resfig = res.plot()
+resaxarr = resfig.get_axes()
+resaxarr[1].set_ylim([0, 500])
+
 
 # calculate statistics
 df['ROLLING_MEAN'] = df['PRICE'].rolling(WINDOW*48, center=True, win_type='boxcar').mean()
